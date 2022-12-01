@@ -1,30 +1,25 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
-# %matplotlib inline
-plt.style.use("ggplot")
-
-import sklearn
 from sklearn.decomposition import TruncatedSVD
 
 #Loading the dataset
 
-amazon_ratings = pd.read_csv('C:/Users/palak/Downloads/MockData/ratings_Beauty.csv')
+product_ratings = pd.read_csv('C:/Users/palak/Downloads/MockData/ratings_Beauty.csv')
 
-amazon_ratings = amazon_ratings.dropna()
-amazon_ratings.head()
+product_ratings = product_ratings.dropna()
+product_ratings.head()
 
-print("Amazon ratings shape -->>",amazon_ratings.shape)
+print("Amazon ratings shape -->>",product_ratings.shape)
 
-popular_products = pd.DataFrame(amazon_ratings.groupby('ProductId')['Rating'].count())
+popular_products = pd.DataFrame(product_ratings.groupby('ProductId')['Rating'].count())
 most_popular = popular_products.sort_values('Rating', ascending=False)
 print("Top 10 popular products",most_popular.head(10))
 
 #create a subset
-amazon_ratings1=amazon_ratings.head(10000)
+product_ratings1=product_ratings.head(10000)
 
-ratings_utility_matrix = amazon_ratings1.pivot_table(values='Rating', index='UserId', columns='ProductId', fill_value=0)
+ratings_utility_matrix = product_ratings1.pivot_table(values='Rating', index='UserId', columns='ProductId', fill_value=0)
 ratings_utility_matrix.head()
 #print(ratings_utility_matrix.head())
 
