@@ -59,9 +59,9 @@ def train():
     #ID, user, movie, ratings
     df_train , df_valid = model_selection.train_test_split(df, test_size=0.1, random_state=42, stratify=df.rating.values)
 
-    train_dataset = MovieDataset(users=df_train.user.values, movies=df_train.movie.values, ratings=df_train.rating.values)
+    train_dataset = MovieDataset(user=df_train.userId.values, movie=df_train.movieId.values, ratings=df_train.rating.values)
 
-    valid_dataset = MovieDataset(users=df_valid.user.values, movies=df_valid.movie.values, ratings=df_valid.rating.values)
+    valid_dataset = MovieDataset(user=df_valid.userId.values, movie=df_valid.movieId.values, ratings=df_valid.rating.values)
 
 if __name__ == "__main__":
     train()
