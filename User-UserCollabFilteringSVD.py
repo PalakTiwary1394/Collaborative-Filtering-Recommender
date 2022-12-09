@@ -14,7 +14,7 @@ print("Amazon ratings shape -->>",product_ratings.shape)
 
 popular_products = pd.DataFrame(product_ratings.groupby('ProductId')['Rating'].count())
 most_popular = popular_products.sort_values('Rating', ascending=False)
-print("Top 10 popular products",most_popular.head(10))
+print("Top 3 popular products",most_popular.head(3))
 
 #create a subset
 product_ratings1=product_ratings.head(10000)
