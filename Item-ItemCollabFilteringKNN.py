@@ -2,20 +2,41 @@ import numpy as np
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 import pickle
-path = 'C:/Users/palak/Desktop/ShopHopper/'
+from sqlalchemy import create_engine
 
-df_meta=pd.read_csv(path + 'products.csv', low_memory=False, encoding='cp1252')
-pd.set_option('display.max_colwidth', 20)
+# path = 'C:/Users/palak/Desktop/ShopHopper/'
+#
+# df_meta=pd.read_csv(path + 'products.csv', low_memory=False, encoding='cp1252')
+# pd.set_option('display.max_colwidth', 20)
 
-df = pd.DataFrame()
-df['id'] = df_meta['id']
-df['title'] = df_meta['title']
-df['index'] = df_meta['Index']
-df['Gender'] = df_meta['Gender']
-df['Product_Type'] = df_meta['Product_Type']
+def create_vector_matrix():
+    dbConnection = connect_to_db()
+    df_meta = pd.read_sql("select id, title, index, gender, product_type from products",
+                          dbConnection)
+    pd.set_option('display.expand_frame_repr', False);
+    disconnect_from_db(dbConnection)
 
-sparse_matrix_products = df[["Gender","Product_Type"]]
+    df = pd.DataFrame()
+    df['id'] = df_meta['id']
+    df['title'] = df_meta['title']
+    df['index'] = df_meta['index']
+    df['Gender'] = df_meta['gender']
+    df['Product_Type'] = df_meta['product_type']
 
+    sparse_matrix_products = df[["Gender","Product_Type"]]
+
+    return sparse_matrix_products, df
+
+def connect_to_db():
+    # establishing the connection
+    alchemyEngine = create_engine(
+        'postgresql://otjoiayz:WDcK1I9f9hhsx51XD_pAahhE5G5KN7kg@peanut.db.elephantsql.com/otjoiayz', pool_recycle=3600);
+    dbConnection = alchemyEngine.connect()
+    return dbConnection
+
+
+def disconnect_from_db(dbConnection):
+    dbConnection.close()
 
 def get_recommendations(sparse_matrix_products):
     sparse_matrix_products = pd.get_dummies(sparse_matrix_products)
@@ -43,7 +64,7 @@ def get_recommendations(sparse_matrix_products):
 
     return list
 
-
+sparse_matrix_products, df = create_vector_matrix()
 list = get_recommendations(sparse_matrix_products)
 print("Recommended Products List:",list)
 print("\n")
