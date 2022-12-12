@@ -22,6 +22,7 @@ def create_vector_matrix():
     df['index'] = df_meta['index']
     df['Gender'] = df_meta['gender']
     df['Product_Type'] = df_meta['product_type']
+    df.set_index('index', inplace=True)
 
     sparse_matrix_products = df[["Gender","Product_Type"]]
 
@@ -38,8 +39,14 @@ def connect_to_db():
 def disconnect_from_db(dbConnection):
     dbConnection.close()
 
-def get_recommendations(sparse_matrix_products):
+def get_recommendations(sparse_matrix_products, df):
     sparse_matrix_products = pd.get_dummies(sparse_matrix_products)
+
+    print(sparse_matrix_products)
+    # print(df.head(1).index)
+    # index = df.index[lambda x: for x in df.index() ]
+    print(df)
+    # print(df.iloc[])
 
     model = NearestNeighbors(n_neighbors=10, metric='cosine',algorithm='brute', n_jobs=-1)
     model.fit(sparse_matrix_products)
@@ -49,23 +56,19 @@ def get_recommendations(sparse_matrix_products):
 
     # load the model from disk
     loaded_model = pickle.load(open('knnpickle_file.pkl', 'rb'))
-    query_index=10
+    query_index=3
     distances,indices=loaded_model.kneighbors(sparse_matrix_products.iloc[query_index,:].values.reshape(1,-1))
 
 
     list=[query_index]
     for i in range(0,10):
-        if i==0:
-            print("")
-            #print("Recommendation for {0}:".format(sparse_matrix_products.index[query_index]))
-        else:
-            #print("{0}: {1}".format(i,sparse_matrix_products.index[indices.flatten()[i]]))
+        if i!=0:
             list.append(sparse_matrix_products.index[indices.flatten()[i]])
 
     return list
 
 sparse_matrix_products, df = create_vector_matrix()
-list = get_recommendations(sparse_matrix_products)
+list = get_recommendations(sparse_matrix_products, df)
 print("Recommended Products List:",list)
 print("\n")
 
