@@ -42,7 +42,7 @@ def disconnect_from_db(dbConnection):
 
 def getOrderedProduct():
     dbConnection = connect_to_db()
-    ordered_product = pd.read_sql("SELECT index	FROM public.products where id in (select \"Product_id\" from public.\"Orders\" where \"User_id\" = 'cl84q1g8b005909kxez9gzpol');",
+    ordered_product = pd.read_sql("SELECT index	FROM public.products where id in (select \"Product_id\" from public.\"Orders\" where \"User_id\" = 'cl84q1g8b005909kxez9gzpol' order by \"Created_At\" desc limit 1);",
                                   dbConnection)
     disconnect_from_db(dbConnection)
     print(f'ordered_product: {ordered_product}')
