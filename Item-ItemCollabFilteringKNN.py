@@ -11,7 +11,7 @@ from sqlalchemy import create_engine
 
 def create_vector_matrix():
     dbConnection = connect_to_db()
-    df_meta = pd.read_sql("select id, title, index, gender, product_type from products",
+    df_meta = pd.read_sql("select id, title, index, gender,buckets_manual_1, product_type from products",
                           dbConnection)
     pd.set_option('display.expand_frame_repr', False);
     disconnect_from_db(dbConnection)
@@ -22,9 +22,10 @@ def create_vector_matrix():
     df['index'] = df_meta['index']
     df['Gender'] = df_meta['gender']
     df['Product_Type'] = df_meta['product_type']
+    df['buckets'] = df_meta['buckets_manual_1']
     df.set_index('index', inplace=True)
 
-    sparse_matrix_products = df[["Gender","Product_Type"]]
+    sparse_matrix_products = df[["Gender","Product_Type", "buckets"]]
 
     return sparse_matrix_products, df
 
@@ -39,14 +40,17 @@ def connect_to_db():
 def disconnect_from_db(dbConnection):
     dbConnection.close()
 
+def getOrderedProduct():
+    dbConnection = connect_to_db()
+    ordered_product = pd.read_sql("SELECT index	FROM public.products where id in (select \"Product_id\" from public.\"Orders\" where \"User_id\" = 'cl84q1g8b005909kxez9gzpol');",
+                                  dbConnection)
+    disconnect_from_db(dbConnection)
+    print(f'ordered_product: {ordered_product}')
+    return ordered_product.values[0][0]
+
 def get_recommendations(sparse_matrix_products, df):
     sparse_matrix_products = pd.get_dummies(sparse_matrix_products)
-
-    print(sparse_matrix_products)
-    # print(df.head(1).index)
-    # index = df.index[lambda x: for x in df.index() ]
-    print(df)
-    # print(df.iloc[])
+    ordered_product = getOrderedProduct()
 
     model = NearestNeighbors(n_neighbors=10, metric='cosine',algorithm='brute', n_jobs=-1)
     model.fit(sparse_matrix_products)
@@ -56,8 +60,10 @@ def get_recommendations(sparse_matrix_products, df):
 
     # load the model from disk
     loaded_model = pickle.load(open('knnpickle_file.pkl', 'rb'))
-    query_index=3
-    distances,indices=loaded_model.kneighbors(sparse_matrix_products.iloc[query_index,:].values.reshape(1,-1))
+
+
+    query_index=ordered_product
+    distances,indices=loaded_model.kneighbors(sparse_matrix_products.loc[query_index,:].values.reshape(1,-1))
 
 
     list=[query_index]
