@@ -1,25 +1,37 @@
 import numpy as np
 import pandas as pd
-
+from sqlalchemy import create_engine
 from sklearn.decomposition import TruncatedSVD
 
-#Loading the dataset
+def connect_to_db():
+    # establishing the connection
+    alchemyEngine = create_engine(
+        'postgresql://otjoiayz:WDcK1I9f9hhsx51XD_pAahhE5G5KN7kg@peanut.db.elephantsql.com/otjoiayz', pool_recycle=3600);
+    dbConnection = alchemyEngine.connect()
+    return dbConnection
 
-product_ratings = pd.read_csv('C:/Users/palak/Downloads/MockData/ratings_Beauty.csv')
+def disconnect_from_db(dbConnection):
+    dbConnection.close()
+
+#Loading the dataset
+dbConnection = connect_to_db()
+product_ratings = pd.read_sql("SELECT \"Index\", \"Order_id\", \"User_id\", \"Product_id\", \"Rating\", \"Created_At\" FROM public.\"ShopOrders\";",
+                                  dbConnection)
+disconnect_from_db(dbConnection)
 
 product_ratings = product_ratings.dropna()
 product_ratings.head()
 
 print("Amazon ratings shape -->>",product_ratings.shape)
 
-popular_products = pd.DataFrame(product_ratings.groupby('ProductId')['Rating'].count())
+popular_products = pd.DataFrame(product_ratings.groupby('Product_id')['Rating'].count())
 most_popular = popular_products.sort_values('Rating', ascending=False)
 print("Top 3 popular products",most_popular.head(3))
 
 #create a subset
 product_ratings1=product_ratings.head(10000)
 
-ratings_utility_matrix = product_ratings1.pivot_table(values='Rating', index='UserId', columns='ProductId', fill_value=0)
+ratings_utility_matrix = product_ratings1.pivot_table(values='Rating', index='User_id', columns='Product_id', fill_value=0)
 ratings_utility_matrix.head()
 #print(ratings_utility_matrix.head())
 
@@ -48,9 +60,10 @@ print("Correlation matrix shape -->>",correlation_matrix.shape)
 print("Randomly chosen product -->> ",X.index[99])
 
 # chosen product
-i = "6117036094"
+i = "7748554490070"
 
 product_names = list(X.index)
+# print(product_names)
 product_ID = product_names.index(i)
 print("Randomly chosen product ID-->> ",product_ID)
 

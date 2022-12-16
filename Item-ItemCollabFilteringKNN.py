@@ -4,11 +4,6 @@ from sklearn.neighbors import NearestNeighbors
 import pickle
 from sqlalchemy import create_engine
 
-# path = 'C:/Users/palak/Desktop/ShopHopper/'
-#
-# df_meta=pd.read_csv(path + 'products.csv', low_memory=False, encoding='cp1252')
-# pd.set_option('display.max_colwidth', 20)
-
 def create_vector_matrix():
     dbConnection = connect_to_db()
     df_meta = pd.read_sql("select id, title, index, gender,buckets_manual_1, buckets_manual_2,product_type_manual from products",
@@ -43,7 +38,7 @@ def disconnect_from_db(dbConnection):
 
 def getOrderedProduct():
     dbConnection = connect_to_db()
-    ordered_product = pd.read_sql("SELECT index	FROM public.products where id in (select \"Product_id\" from public.\"Orders\" where \"User_id\" = 'cl84pz9ki003509kxn2r2fgfi' order by \"Created_At\" desc limit 1);",
+    ordered_product = pd.read_sql("SELECT index	FROM public.products where id in (select \"Product_id\" from public.\"ShopOrders\" where \"User_id\" = 'cl84pz9ki003509kxn2r2fgfi' order by \"Created_At\" desc limit 1);",
                                   dbConnection)
     disconnect_from_db(dbConnection)
     print(f'ordered_product: {ordered_product}')
