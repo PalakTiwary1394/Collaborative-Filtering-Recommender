@@ -10,4 +10,4 @@
 * sqlachemy
 * nltk
 
-To run the code run ContentBasedFilteringTFIDF.py
+To execute the code run ContentBasedFilteringTFIDF.py
