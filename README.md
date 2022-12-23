@@ -1,12 +1,13 @@
 # Collaborative-Filtering-Recommender
 
 
-##General Info 
+##Collaborative Filtering 
 *** 
 Install the packages mentioned below:
 ```
-*pandas
-*sklearn
-*sqlachemy
+* pandas
+* skicit-learn
+* sqlachemy
+* nltk
 
 To run the code run ContentBasedFilteringTFIDF.py
