@@ -3,8 +3,10 @@
 
 ##General Info 
 *** 
-blah blah blah
+Install the packages mentioned below:
 ```
-*l1
-*l2
-*l3
+*pandas
+*sklearn
+*sqlachemy
+
+To run the code run ContentBasedFilteringTFIDF.py
