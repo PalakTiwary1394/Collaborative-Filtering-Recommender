@@ -3,7 +3,7 @@
 
 ## Collaborative Filtering 
 *** 
-* Install the packages: *
+*Install the packages:*
 ```
 * pandas
 * skicit-learn
