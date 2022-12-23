@@ -1,9 +1,9 @@
 # Collaborative-Filtering-Recommender
 
 
-##Collaborative Filtering 
+## Collaborative Filtering 
 *** 
-Install the packages mentioned below:
+* Install the packages: *
 ```
 * pandas
 * skicit-learn
