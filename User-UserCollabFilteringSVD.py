@@ -68,7 +68,7 @@ product_ID = product_names.index(i)
 print("Randomly chosen product ID-->> ",product_ID)
 
 #Correlation for all items with the item purchased by
-# this customer based on items rated by other customers people who bought the same product
+#this customer based on items rated by other customers people who bought the same product
 correlation_product_ID = correlation_matrix[product_ID]
 print("Correlation product ID shape -->> ",correlation_product_ID.shape)
 
