@@ -29,5 +29,6 @@ To execute the code run ContentBasedFilteringTFIDF.py
 ```
 
 To execute the code run BucketsPrediction.py <br>
-Input File can be downloaded from [here](https://drive.google.com/file/d/11Klnw9L47G9Y0lIPBHtpqowGCNAlf0D9/view?usp=sharing)
+Input File can be downloaded from [here](https://drive.google.com/file/d/11Klnw9L47G9Y0lIPBHtpqowGCNAlf0D9/view?usp=sharing)<br>
+Modify line 11 of code to have the location of the input file on your machine
 
