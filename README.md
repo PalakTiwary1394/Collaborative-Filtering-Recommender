@@ -9,5 +9,9 @@
 * skicit-learn
 * sqlachemy
 * nltk
+* tensorflow
+* keras
+* stopwords
+
 
 To execute the code run ContentBasedFilteringTFIDF.py
