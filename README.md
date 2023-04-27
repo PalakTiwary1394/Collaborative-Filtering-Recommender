@@ -32,5 +32,7 @@ To execute the code run BucketsPrediction.py <br>
 Input File can be downloaded from [here](https://drive.google.com/file/d/11Klnw9L47G9Y0lIPBHtpqowGCNAlf0D9/view?usp=sharing)<br>
 Modify line 11 of code to have the location of the input file on your machine
 
+Input file has been created using columns from the products table. Details of how to create the file can be found [here](https://docs.google.com/document/d/1_7kjyTtNQtOfwNrHH2lqnskzH4F-fY8DMer2v2hpINU/edit)<br> 
+
 More data can be added to the input file from Shophopper DB as more products get added to the DB. The code can be re-run on the new input file.
 
